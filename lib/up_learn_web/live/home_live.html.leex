@@ -1,0 +1,27 @@
+<form phx-change="change-url" phx-submit="search">
+  <div class="form-row">
+    <input type="text" name="q" value="<%= @query %>" placeholder="Fetch url here" autocomplete="off"/>
+    <button type="submit" phx-disable-with="Searching...">Search</button>
+  </div>
+  <%= if @message_error do %>
+    <span class="invalid-feedback"><%= @message_error %> </span>
+  <% end %>
+</form>
+
+<%= if @results[:links] && Enum.count(@results[:links]) > 0 do %>
+  <div class="results">
+    <h3> LINKS </h3>
+    <%= for link <- @results[:links] do %>
+      <p class="list-item">- <%= link %></p>
+    <% end %>
+  </div>
+<% end %>
+
+<%= if @results[:assets] && Enum.count(@results[:assets]) > 0 do %>
+  <div class="results">
+    <h3> ASSETS </h3>
+    <%= for asset <- @results[:assets] do %>
+      <p class="list-item">- <%= asset %></p>
+    <% end %>
+  </div>
+<% end %>
