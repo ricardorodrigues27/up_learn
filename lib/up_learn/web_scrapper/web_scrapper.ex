@@ -4,7 +4,11 @@ defmodule UpLearn.WebScrapper do
   def fetch_and_extract_data(url) do
     Ecto.Multi.new()
     |> Ecto.Multi.run(:fetch_url, fn _repo, _changes ->
-      {:ok, Fetcher.fetch(url)}
+      try do
+        {:ok, Fetcher.fetch(url)}
+      rescue
+        _error -> {:error, :invalid_url}
+      end
     end)
     |> Ecto.Multi.run(:parse_response, fn _repo, %{fetch_url: response} ->
       parse_response(response)
